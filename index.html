@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07090f">
+  <title>AMAN — Creative • Editor • Esports</title>
+  <style>
+    :root {
+      --ink: #07090f;
+      --panel: #101522;
+      --panel-2: #161d2d;
+      --line: rgba(205, 225, 255, .15);
+      --muted: #a8b2c5;
+      --white: #f5f8ff;
+      --blue: #38a8ff;
+      --blue-soft: #78ccff;
+      --red: #fb405c;
+      --yellow: #ffcb4b;
+      --display: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      --body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--white);
+      background: var(--ink);
+      font-family: var(--body);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1180px, calc(100% - 48px)); margin: auto; }
+
+    .noise { position: fixed; inset: 0; opacity: .035; z-index: 20; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E"); }
+
+    .nav {
+      position: absolute; inset: 0 0 auto; z-index: 4;
+      display: flex; align-items: center; justify-content: space-between;
+      width: min(1180px, calc(100% - 48px)); margin: auto; padding: 28px 0;
+    }
+    .wordmark { letter-spacing: .1em; font-size: .84rem; font-weight: 850; }
+    .wordmark span { color: var(--blue); }
+    .nav-links { display: flex; gap: 22px; font-size: .73rem; font-weight: 800; letter-spacing: .1em; color: var(--muted); }
+    .nav-links a:hover { color: var(--white); }
+
+    .hero { position: relative; min-height: 800px; display: grid; align-items: end; isolation: isolate; overflow: hidden; }
+    .hero-image { position: absolute; inset: 0; z-index: -3; background: linear-gradient(90deg, #05080f 0%, rgba(5,8,15,.55) 39%, rgba(5,8,15,.2) 100%), url('assets/team-variant.png') center / cover no-repeat; filter: saturate(1.12) contrast(1.05); }
+    .hero-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, var(--ink) 0%, transparent 42%), linear-gradient(130deg, rgba(9,101,255,.22), transparent 45%); }
+    .scanline { position: absolute; inset: 0; z-index: -2; opacity: .3; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.025) 4px); }
+    .hero-orb { position: absolute; width: 520px; height: 520px; right: -180px; bottom: -260px; z-index: -1; border: 1px solid rgba(56,168,255,.35); border-radius: 50%; box-shadow: 0 0 0 75px rgba(56,168,255,.06), 0 0 0 150px rgba(56,168,255,.035); }
+    .hero-content { padding: 192px 0 112px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--blue-soft); font-size: .71rem; letter-spacing: .16em; font-weight: 850; text-transform: uppercase; }
+    .eyebrow::before { content: ''; width: 26px; height: 2px; background: var(--red); }
+    h1, h2, h3, p { margin: 0; }
+    .hero h1 { max-width: 760px; margin: 18px 0; font-family: var(--display); font-size: clamp(4.6rem, 10vw, 9.1rem); line-height: .81; letter-spacing: .01em; text-transform: uppercase; text-shadow: 0 6px 28px rgba(0,0,0,.32); }
+    .hero h1 em { color: var(--blue); font-style: normal; }
+    .hero-copy { max-width: 490px; color: #d7dfef; font-size: 1.02rem; line-height: 1.7; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 30px; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 20px; border: 1px solid transparent; font-size: .72rem; letter-spacing: .11em; font-weight: 850; text-transform: uppercase; transition: .2s ease; }
+    .btn.primary { color: #06101b; background: var(--blue); }
+    .btn.secondary { border-color: rgba(255,255,255,.32); background: rgba(8,13,22,.35); backdrop-filter: blur(8px); }
+    .btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
+    .scroll-label { position: absolute; right: max(24px, calc((100vw - 1180px) / 2)); bottom: 54px; transform: rotate(-90deg); transform-origin: right bottom; color: var(--muted); font-size: .61rem; font-weight: 800; letter-spacing: .18em; }
+
+    .ticker { overflow: hidden; white-space: nowrap; background: var(--blue); color: #05101d; border-block: 1px solid rgba(255,255,255,.25); }
+    .ticker p { display: inline-block; padding: 12px 0; font-size: .73rem; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; animation: crawl 28s linear infinite; }
+    @keyframes crawl { to { transform: translateX(-50%); } }
+
+    section { padding: 120px 0; }
+    .section-kicker { color: var(--blue); font-size: .69rem; letter-spacing: .16em; font-weight: 850; text-transform: uppercase; }
+    .section-title { margin-top: 13px; font-family: var(--display); font-size: clamp(2.8rem, 5vw, 5.2rem); line-height: .86; letter-spacing: .015em; text-transform: uppercase; }
+    .section-title i { font-style: normal; color: var(--red); }
+
+    .about { background: linear-gradient(135deg, #0b101b, #07090f 58%); }
+    .about-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(42px, 8vw, 120px); align-items: center; }
+    .about-stat { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .stat { padding: 28px 20px; background: #0d1320; }
+    .stat strong { display: block; font-family: var(--display); color: var(--blue); font-size: 2.9rem; line-height: 1; }
+    .stat span { display: block; margin-top: 7px; color: var(--muted); font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .about p { margin-top: 28px; max-width: 590px; color: var(--muted); font-size: 1.05rem; line-height: 1.8; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 29px; }
+    .pill { padding: 9px 11px; border: 1px solid var(--line); color: #dfe8fa; font-size: .68rem; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+
+    .skills-head { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 38px; }
+    .skills-note { max-width: 310px; color: var(--muted); font-size: .91rem; line-height: 1.6; }
+    .skills-grid { display: grid; grid-template-columns: repeat(5, 1fr); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+    .skill { min-height: 235px; padding: 24px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: linear-gradient(150deg, #101726, #0b0f19); transition: .25s ease; }
+    .skill:hover { background: linear-gradient(150deg, #152d48, #101726); transform: translateY(-5px); }
+    .skill-num { color: var(--red); font-size: .72rem; font-weight: 900; }
+    .skill h3 { margin-top: 63px; font-family: var(--display); font-size: 1.9rem; letter-spacing: .03em; text-transform: uppercase; }
+    .skill p { margin-top: 10px; color: var(--muted); font-size: .82rem; line-height: 1.55; }
+
+    .variant { position: relative; min-height: 640px; display: flex; align-items: center; overflow: hidden; isolation: isolate; }
+    .variant-bg { position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(5,8,15,.97) 0%, rgba(5,8,15,.72) 45%, rgba(5,8,15,.16) 100%), url('assets/team-variant.png') center / cover no-repeat; }
+    .variant-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(5,8,15,.92), transparent 65%); }
+    .variant .content { max-width: 600px; }
+    .variant p { margin-top: 23px; color: #d3dced; line-height: 1.75; }
+    .variant-role { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 31px; }
+    .variant-role span { padding: 8px 12px; color: #e4f4ff; background: rgba(56,168,255,.13); border: 1px solid rgba(56,168,255,.4); font-size: .66rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+
+    .gallery-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 38px; }
+    .gallery-intro p { max-width: 450px; color: var(--muted); line-height: 1.75; }
+    .gallery { display: grid; grid-template-columns: 1.15fr .85fr .85fr; grid-template-rows: 250px 250px; gap: 14px; }
+    .shot { position: relative; overflow: hidden; background: var(--panel); }
+    .shot:first-child { grid-row: span 2; }
+    .shot:nth-child(4) { grid-column: span 2; }
+    .shot img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+    .shot:hover img { transform: scale(1.06); }
+    .shot::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(4,7,12,.75), transparent 47%); }
+    .shot-label { position: absolute; z-index: 1; left: 17px; bottom: 16px; font-size: .68rem; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+
+    .focus { background: linear-gradient(125deg, #0c1320, #07111f 53%, #11111b); }
+    .focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 38px; }
+    .focus-card { min-height: 230px; padding: 31px; border: 1px solid var(--line); background: rgba(255,255,255,.025); }
+    .focus-card small { color: var(--blue); font-size: .67rem; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    .focus-card h3 { margin-top: 13px; font-family: var(--display); font-size: clamp(2rem, 3.6vw, 3.3rem); line-height: .9; letter-spacing: .02em; text-transform: uppercase; }
+    .focus-card p { max-width: 430px; margin-top: 17px; color: var(--muted); font-size: .92rem; line-height: 1.75; }
+    .focus-card.highlight { background: linear-gradient(130deg, #143867, #0a1526); border-color: rgba(56,168,255,.5); }
+    .focus-card.highlight h3 { color: var(--blue-soft); }
+
+    .mindset { background: #eff6ff; color: #07101b; }
+    .mindset-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 74px; }
+    .mindset .section-kicker { color: #126eb8; }
+    .mindset .section-title i { color: #e72d49; }
+    .quote { max-width: 640px; font-family: var(--display); font-size: clamp(2.3rem, 4.2vw, 4.2rem); line-height: .96; text-transform: uppercase; }
+    .mindset-list { display: grid; gap: 0; border-top: 1px solid rgba(7,16,27,.18); }
+    .mindset-list div { display: flex; justify-content: space-between; padding: 17px 0; border-bottom: 1px solid rgba(7,16,27,.18); font-size: .86rem; font-weight: 800; }
+    .mindset-list span:last-child { color: #247cbf; }
+
+    .contact { position: relative; overflow: hidden; text-align: center; background: radial-gradient(circle at 50% 0%, #163764, #080b12 59%); }
+    .contact::before { content: 'AMAN'; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -43%); z-index: 0; color: rgba(255,255,255,.035); font-family: var(--display); font-size: min(35vw, 32rem); line-height: .8; }
+    .contact .wrap { position: relative; z-index: 1; }
+    .contact .section-title { font-size: clamp(4.4rem, 9vw, 8rem); }
+    .contact p { max-width: 550px; margin: 25px auto 33px; color: #cddbed; line-height: 1.75; }
+    .contact .btn { background: var(--yellow); color: #1b1301; }
+    footer { padding: 20px 0 27px; background: #05070b; color: #7e899c; font-size: .65rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 20px; }
+
+    @media (max-width: 840px) {
+      .nav-links { display: none; }
+      .hero { min-height: 750px; }
+      .hero-image { background-position: 64% center; }
+      .scroll-label { display: none; }
+      .about-grid, .mindset-grid, .gallery-intro, .focus-grid { grid-template-columns: 1fr; gap: 28px; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .skill:last-child { grid-column: span 2; }
+      .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 235px 210px 210px; }
+      .shot:first-child { grid-row: span 2; }
+      .shot:nth-child(4) { grid-column: span 2; }
+      .skills-head { align-items: start; flex-direction: column; }
+    }
+    @media (max-width: 540px) {
+      .wrap, .nav { width: min(100% - 32px, 1180px); }
+      .nav { padding: 21px 0; }
+      .hero-content { padding-bottom: 75px; }
+      .hero h1 { font-size: clamp(4rem, 20vw, 5.6rem); }
+      section { padding: 79px 0; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .skill, .skill:last-child { grid-column: auto; min-height: 195px; }
+      .skill h3 { margin-top: 36px; }
+      .gallery { grid-template-columns: 1fr; grid-template-rows: 310px 210px 210px 220px; }
+      .shot:first-child, .shot:nth-child(4) { grid-column: auto; grid-row: auto; }
+      .about-stat { max-width: 390px; }
+      footer .wrap { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="hero" id="top">
+    <nav class="nav">
+      <a class="wordmark" href="#top">AMAN<span>_</span>PORTFOLIO</a>
+      <div class="nav-links">
+        <a href="#about">About</a><a href="#skills">Skills</a><a href="#variant">Team Variant</a><a href="#work">Beyond the Screen</a>
+      </div>
+    </nav>
+    <div class="hero-image"></div><div class="scanline"></div><div class="hero-orb"></div>
+    <div class="wrap hero-content">
+      <div class="eyebrow">Creative Player / Builder / Teammate</div>
+      <h1>Design.<br><em>Play.</em> Create.</h1>
+      <p class="hero-copy">Multi-skilled creative blending graphic design, video editing, camera work and esports into stories that make an impact.</p>
+      <div class="hero-actions"><a class="btn primary" href="#variant">Meet Team Variant <span>→</span></a><a class="btn secondary" href="#about">My Profile</a></div>
+    </div>
+    <div class="scroll-label">Scroll to explore</div>
+  </header>
+
+  <div class="ticker"><p>CREATIVITY ✦ DISCIPLINE ✦ VERSATILITY ✦ TEAMWORK ✦ CONTINUOUS LEARNING ✦ CREATIVITY ✦ DISCIPLINE ✦ VERSATILITY ✦ TEAMWORK ✦ CONTINUOUS LEARNING ✦ </p></div>
+
+  <main>
+    <section class="about" id="about">
+      <div class="wrap about-grid">
+        <div class="about-stat">
+          <div class="stat"><strong>05</strong><span>Creative lanes</span></div>
+          <div class="stat"><strong>01</strong><span>Team mindset</span></div>
+          <div class="stat"><strong>∞</strong><span>Ideas in motion</span></div>
+          <div class="stat"><strong>TV</strong><span>Team Variant</span></div>
+        </div>
+        <div>
+          <div class="section-kicker">01 / About Me</div>
+          <h2 class="section-title">More than<br>one <i>lane.</i></h2>
+          <p>I'm AMAN — a multi-skilled creative who works across graphic design, video editing, camera handling, Instagram management and esports. I focus on continuous learning while creating meaningful work and building a strong identity through creativity, discipline and teamwork.</p>
+          <div class="pill-row"><span class="pill">Creative identity</span><span class="pill">Storytelling</span><span class="pill">Gaming culture</span><span class="pill">Team-first</span><span class="pill">Continuous learning</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="wrap">
+        <div class="skills-head">
+          <div><div class="section-kicker">02 / Skill Set</div><h2 class="section-title">Built for<br><i>the feed.</i></h2></div>
+          <p class="skills-note">Visual craft, sharp communication and the energy to take an idea all the way from concept to community.</p>
+        </div>
+        <div class="skills-grid">
+          <article class="skill"><span class="skill-num">01</span><h3>Graphic<br>Design</h3><p>Eye-catching visuals for social media, gaming, brands and digital content.</p></article>
+          <article class="skill"><span class="skill-num">02</span><h3>Video<br>Editing</h3><p>Storytelling, pacing, transitions and visual impact that hold attention.</p></article>
+          <article class="skill"><span class="skill-num">03</span><h3>Camera<br>Handling</h3><p>Photography and video production with an eye for composition and moments.</p></article>
+          <article class="skill"><span class="skill-num">04</span><h3>Instagram<br>Management</h3><p>Content planning, profile management and posts built for a gaming audience.</p></article>
+          <article class="skill"><span class="skill-num">05</span><h3>Esports</h3><p>Competitive play powered by strategy, communication and teamwork.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="variant" id="variant">
+      <div class="variant-bg"></div>
+      <div class="wrap"><div class="content">
+        <div class="section-kicker">03 / Gaming, Esports, Creativity</div>
+        <h2 class="section-title">Team<br><i>Variant.</i></h2>
+        <p>Team Variant is my gaming and community project — the place where esports, creativity and content creation come together. Every session is an opportunity to play smarter, create bolder and grow a stronger community.</p>
+        <div class="variant-role"><span>Esports Player</span><span>Creative</span><span>Graphic Designer</span><span>Video Editor</span><span>Content Manager</span></div>
+      </div></div>
+    </section>
+
+    <section id="work">
+      <div class="wrap">
+        <div class="gallery-intro"><div><div class="section-kicker">04 / Beyond The Screen</div><h2 class="section-title">Focus in<br><i>every frame.</i></h2></div><p>Creativity doesn't stop at the desk. Live performance, music and training have shaped my ability to stay composed, capture a moment and show up for the team.</p></div>
+        <div class="gallery">
+          <figure class="shot"><img src="assets/farewell-stage.jpg" alt="Live farewell performance on stage"><figcaption class="shot-label">Live Performance</figcaption></figure>
+          <figure class="shot"><img src="assets/classroom-session.jpg" alt="Music session with classmates"><figcaption class="shot-label">Creative Sessions</figcaption></figure>
+          <figure class="shot"><img src="assets/boxing-training.jpg" alt="Boxing training"><figcaption class="shot-label">Discipline & Focus</figcaption></figure>
+          <figure class="shot"><img src="assets/stage-performance.jpg" alt="Musical performance on stage"><figcaption class="shot-label">Confidence on Stage</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="focus" id="focus">
+      <div class="wrap">
+        <div class="section-kicker">05 / Current Direction</div>
+        <h2 class="section-title">What I'm<br><i>focused on.</i></h2>
+        <div class="focus-grid">
+          <article class="focus-card highlight"><small>Creative work</small><h3>Build visuals.<br>Tell stories.</h3><p>Current focus: graphic design, video editing, content creation and creative projects that help ideas look sharper and feel more memorable.</p></article>
+          <article class="focus-card"><small>Competitive mindset</small><h3>Play. Learn.<br>Improve.</h3><p>Esports and badminton experience have developed my discipline, focus and competitive mindset — qualities I bring into every creative challenge and team environment.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="mindset">
+      <div class="wrap mindset-grid">
+        <div><div class="section-kicker">06 / What I Bring</div><h2 class="section-title">Play smart.<br><i>Make it count.</i></h2></div>
+        <div><p class="quote">"The best work happens when creativity and discipline play on the same team."</p><div class="mindset-list"><div><span>Creative problem-solving</span><span>01</span></div><div><span>Competitive focus</span><span>02</span></div><div><span>Versatility across formats</span><span>03</span></div><div><span>Team communication</span><span>04</span></div><div><span>Continuous learning mindset</span><span>05</span></div></div></div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact"><div class="wrap"><div class="section-kicker">07 / Collaboration</div><h2 class="section-title">Let's create<br>something <i>together.</i></h2><p>Always open to new projects, collaborations and creative opportunities. Let's turn a strong idea into meaningful content — through design, editing, gaming or community work.</p><a class="btn" href="#top">Back to the top <span>↑</span></a></div></section>
+  </main>
+  <footer><div class="wrap"><span>© 2026 AMAN / Portfolio</span><span>Designer · Editor · Esports Player</span></div></footer>
+</body>
+</html>
